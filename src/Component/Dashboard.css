@@ -1,0 +1,19 @@
+.prctCountDiv,.prctBarDiv,.prctDoghnutDiv,.userCountDiv{
+    display: inline-block;
+}
+
+.prctCountDiv{
+margin-left: 1vw;
+margin-top: 0px;
+margin-right: 15vw;
+}
+
+.prctBarDiv{
+    margin-left: 1vw;
+    margin-top: 0vh;
+    margin-right: 20vw;
+}
+
+.prctDoghnutDiv{
+    margin-left: -5vw;
+}

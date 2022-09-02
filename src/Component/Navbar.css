@@ -1,0 +1,45 @@
+
+.lobtn{
+    margin-top: 0vh;
+    margin-left: 1vw;
+}
+
+.had{
+   Padding-left: 1vw;
+   transition: 0.3s;
+   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+   /* height: 13px; */
+}
+.had:hover{
+    background: rgb(238, 235, 235);
+}
+
+
+.auditSelc{
+    width: 11vw;
+}
+
+#ppf{
+    margin-left: 55vw;
+    height:6vh;
+    width:3vw;
+    border-radius:25px;
+}
+
+#cardDiv{
+    border: 0.1px solid black;
+    border-radius: 20px;
+    width: 20vw;
+    height: 40vh;
+    position: absolute;
+    z-index: 9999;
+    margin-left: 77vw;
+    background-color: white;
+    display: none;
+    margin-top: -5px;
+    box-shadow: 10px 10px 20px ;
+}
+
+
+
+

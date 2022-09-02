@@ -1,0 +1,17 @@
+// export const  prctColoumns = [{Header :"OBJ ID",accessor : 'id'},{Header :"OBJ TITLE",accessor : 'objTitle',filter:'columnFilter'},
+// {Header : "VALID FROM",accessor : 'validFrom',filter:'columnFilter'},
+// {Header :"VALID UNTIL",accessor : 'validUntil',filter:'columnFilter'},
+// {Header : "OWNER ORGANISATION",accessor : 'ownerOrganization',filter:'columnFilter'},
+// {Header : "OWNER",accessor : 'owner',filter:'columnFilter'},
+// {Header : "LEVEL 1 APPROVER",accessor : 'level1Approver',filter:'columnFilter'},
+// {Header : "LEVEL 2 APPROVER",accessor : 'level2Approver',filter:'columnFilter'},
+// {Header : "RELATIONSHIPS",accessor : 'relationships',filter:'columnFilter'},
+// {Header :"STATUS",accessor : 'status',filter:'columnFilter'},
+// {Header :"CATEGORY",accessor : 'category',filter:'columnFilter'},
+// {Header :" BUISNESS CRITICALITY",accessor : 'businessCriticality',filter:'columnFilter'},
+// {Header :"CREATED ON",accessor : 'createdOn',filter:'columnFilter'},
+// {Header : "CREATED BY",accessor : 'createdBy',filter:'columnFilter'},
+// {Header : 'RESPONSE TYPE', accessor:'responseType',filter:'columnFilter'},
+// {Header: 'OBJ TYPE', accessor:'objType',filter:'columnFilter'},
+// ]
+

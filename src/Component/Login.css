@@ -1,0 +1,48 @@
+.div1{
+    display: flex;
+    height: 100vh;
+    background-color: #007bff;
+}
+.frm{
+    background: white;
+    margin-left: 50vw;
+    width: 50vw;
+}
+
+.emailDiv{
+margin-top: 5vh;
+width: 30vw;
+margin-left: 10vh;
+}
+
+.passDiv{
+    margin-top: 5vh;
+    width: 30vw;
+    margin-left: 10vh;
+
+}
+
+.sbtn{
+    width: 30vw;
+    margin-left: 10vh;
+    margin-top: 5vh;
+    border-radius: 10px;
+    display: block;
+}
+
+.signintxt{
+    margin-left: 10vh;
+    margin-top: 30vh;
+}
+
+.forgotPass{
+    margin-left: 14vh;
+    margin-top: 5vh;
+    display: inline-block;
+}
+
+.forgotUser{
+    display: inline-block;
+    margin-left: 2vw;
+}
+
