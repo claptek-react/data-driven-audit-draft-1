@@ -2,29 +2,25 @@ import React,{useEffect,useState} from 'react'
 import axios from 'axios'
 import {Doughnut} from 'react-chartjs-2'
 // import {Chart as ChartJS} from 'chart.js/auto'
-import { processRepTitle,sscDisInvis,fetchProcessData,riskRepTitle,fetchRiskData,controlRepTitle,fetchControlData,testRepTitle,fetchTestData} from '../actions'
-import { useDispatch } from 'react-redux'
+import { processRepTitle,sscDisInvis,fetchProcessData,riskRepTitle,fetchRiskData,controlRepTitle,fetchControlData,testRepTitle,fetchTestData, allTitles} from '../actions'
+import { useDispatch,useSelector } from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 
-const PrctDonut = () => {
+const PrctDonut = ({proCount,risCount,conCount,tesCount}) => {
   const dispatch = useDispatch()
   const navigate= useNavigate()
-  const [proCount, setproCount] = useState()
-  const [risCount,setrisCount] = useState()
-  const [conCount, setconCount] = useState()
-  const [tesCount,settesCount] = useState()
+  const [dashLabel, setdashLabel] = useState()
+  const [bgColor,setbgColor] = useState()
+  const [legPosAlign,setlegPosAlign] = useState()
+  const dashState = useSelector((state)=>state.getDashboardData)
+
 
 
 useEffect(()=>{
   const expensesListResp = async () => {
-      const ProcessCount = await axios.get('http://localhost:8080/audit/Process')
-      const RiskCount = await axios.get('http://localhost:8080/audit/Risk')
-      const ControlCount = await axios.get('http://localhost:8080/audit/Control')
-      const TestCount = await axios.get('http://localhost:8080/audit/Test')
-       setproCount(ProcessCount.data)
-       setrisCount(RiskCount.data)
-       setconCount(ControlCount.data)
-       settesCount(TestCount.data)
+       setdashLabel(dashState.val.map((res)=>{return res.lables}))
+       setbgColor(dashState.val.map((res)=>{return res.background}))
+       setlegPosAlign(dashState.val.map((res)=>{return res}))
     }
   expensesListResp()
 },[])
@@ -33,12 +29,11 @@ useEffect(()=>{
  
   return (
     <>
-{ proCount&&<Doughnut 
+{ legPosAlign&&<Doughnut 
 data={{
-    labels:['Process','Risk','Control','Test'],
+    labels:dashLabel,
     datasets:[
         {
-            label:'dataSet 1',
             data: [proCount.length,risCount.length,conCount.length,tesCount.length]
         }
     ]
@@ -46,25 +41,26 @@ data={{
 options={{
   plugins: {
     legend: {
-      position: 'right',
-      align: 'center'
+      position: legPosAlign[0].legendPos,
+      align: legPosAlign[0].legendAlign
     }
   },
-  backgroundColor:['#0d6efd','yellow','orange','pink'],
+  backgroundColor:bgColor,
   onClick: (e, elements) => {
     if(elements[0].index===0){
-    navigate('/Component/PrctRep');dispatch(processRepTitle())&&dispatch(sscDisInvis())&&dispatch(fetchProcessData())
+    navigate('/Component/PrctRep');dispatch(fetchProcessData())
     }else if(elements[0].index===1){
-    navigate('/Component/PrctRep');dispatch(riskRepTitle())&&dispatch(sscDisInvis())&&dispatch(fetchRiskData())
+    navigate('/Component/PrctRep');dispatch(fetchRiskData())
     }else if(elements[0].index===2){
-    navigate('/Component/PrctRep');dispatch(controlRepTitle())&&dispatch(sscDisInvis())&&dispatch(fetchControlData())
+    navigate('/Component/PrctRep');dispatch(fetchControlData())
     }else if(elements[0].index===3){
-    navigate('/Component/PrctRep');dispatch(testRepTitle())&&dispatch(sscDisInvis())&&dispatch(fetchTestData())
+    navigate('/Component/PrctRep');dispatch(fetchTestData())
     }
+    dispatch(allTitles(dashLabel[elements[0].index]))
+    dispatch(sscDisInvis());
   },
 
 }}
-style={{height:'25vh', width:'25vw'}}
 />}
     </>
   )

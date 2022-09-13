@@ -1,11 +1,9 @@
 import React,{useEffect,useState}from 'react'
 import { Table } from './Table'
 import Head from './Head'
-import { prctColoumns} from './column';
-import { useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import'./Dashboard.css'
 import Loader from './Loader';
-import { SelectColumnFilter } from './SelectColumnFilter';
 import ColumnFilter from './ColumnFilter';
 import { NumberRangeColumnFilter } from './NumberRangeColumnFilter';
 
@@ -13,6 +11,7 @@ import { NumberRangeColumnFilter } from './NumberRangeColumnFilter';
 const PrctRep = () => {
   var myPrctState = useSelector((state)=> state.getProcessData);
   var mycolState = useSelector((state)=>state.getColumnData)
+  const dashState = useSelector((state)=>state.getDashboardData)
   const [prop, setprop] = useState()
   const [col, setcol] = useState()
 
@@ -28,7 +27,14 @@ useEffect(()=>{
 useEffect(()=>{
   setcol(colArray)
   setprop(myPrctState.val);
+  // dashState.val=[]
+  // console.log(dashState.val)
+  console.log(colArray)
+  console.log(myPrctState)
+  console.log(colArray)
 },[myPrctState])
+
+console.log(mycolState)
 
   return (
     <>
@@ -40,7 +46,7 @@ useEffect(()=>{
     <div>
     <div style={{marginBottom:'1vh'}}>
     </div>
-    {myPrctState.loading ? <Loader/> : <Table column={col} prctvaldata={prop}/>}
+    {myPrctState.loading ?   <Loader/> : <Table column={col} prctvaldata={prop}/>} 
     </div>
     </div>
     </>

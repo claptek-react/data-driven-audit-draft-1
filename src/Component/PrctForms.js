@@ -7,36 +7,52 @@ import './Process.css'
 import { useRef } from 'react';
 import {useNavigate} from 'react-router-dom'
 import Head from './Head';
-import { postFields } from '../actions';
+import { multiRowCarrier, postFields, postMultiFields } from '../actions';
+import MultiRow from './MultiRow';
+import './Process.css'
 import { useEffect } from 'react';
+import { getMultiRowData } from '../reducers/MultiRowData';
 
 const PrctForms = () => {
     const SectionState = useSelector((state)=>state.getSectionData);
     const fieldState = useSelector((state)=>state.getPrctFieldData);
     const formNameState = useSelector((state)=>state.toggleTitle);
     const myFieldValueState = useSelector((State)=>State.getFieldValueData)
+    const myMultiState = useSelector((state)=>state.getMultiRowData)
 
     const fieldArray = useRef([])
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    
-    useEffect(()=>{
-      console.log(myFieldValueState.val)
-    },[myFieldValueState])
-    
-    
+        
+    let obj = {}
+    let objIdVal;
     const getFields = ()=>{
-      let obj = {}
       fieldState.val.map((fil,i)=>{
-        return obj[fieldArray.current[i].id]=fieldArray.current[i].value
+        return (
+          obj[fieldArray.current[i].id]=fieldArray.current[i].value
+          )
       })
+      objIdVal=obj.objId;
+
+      myMultiState.forEach((item,index)=>{myMultiState[index].objId=objIdVal})
+      // myMultiState.forEach((item,index)=>{myMultiState[index].muABCKey=objIdVal})
+
+
+      console.log(myMultiState)
+      
       const fName = (formNameState[0].substring(0,formNameState[0].indexOf(' '))).toLowerCase();
 
+      console.log(myMultiState)
       dispatch(postFields(fName,obj))
-      console.log(obj)
+      for (let i = 0; i <= myMultiState.length; i++) {
+        dispatch(postMultiFields(myMultiState[i]))
+      }
+      console.log(objIdVal)
       navigate('/Component/Dashboard')
-
     }
+
+useEffect(()=>{console.log(myMultiState)},[myMultiState])
+
 
   return (
     <>
@@ -52,17 +68,17 @@ const PrctForms = () => {
                   {
                     fieldState.loading ? <Loader/> : fieldState.val.filter((fil)=>
                     {return fil.fieldCategory===res.sectionName}).map((res)=>{
-                      return <div>
+                      return <>
                         {
                           res.fieldType!== 'select' ?
-                          <div className='form-group'>
+                          <div className='form-group' style={{display:res.displayField,width:res.widthOfField}}>
                             <label htmlFor={res.fieldStoreValue}>{res.fieldLableValue}</label>
-                            <input type={res.fieldType} className="form-control" id={res.fieldStoreValue} ref={(ele)=>fieldArray.current.push(ele)} placeholder={res.fieldLabelValue}></input>
+                            <input type={res.fieldType} className="form-control" id={res.fieldStoreValue} ref={(ele)=>fieldArray.current.push(ele)}  readOnly={res.readOnlyField} style={{height:res.heightOfField,width:res.widthOfField}}></input>
                             </div>
                             :
-                        <div className='form-group'>
+                        <div style={{display:res.displayField,width:res.widthOfField}} >
                             <label htmlFor={res.fieldStoreValue}>{res.fieldLableValue}</label><br></br>
-                            <select id={res.fieldStoreValue} ref={(ele)=>fieldArray.current.push(ele)}>
+                            <select id={res.fieldStoreValue} ref={(ele)=>fieldArray.current.push(ele)} readOnly={res.readOnlyField}  class="form-select" aria-label="Default select example" style={{display:res.displayField,width:res.widthOfField,height:res.heightOfField}}>
                             {
                               myFieldValueState.loading ? <Loader/> : myFieldValueState.val.filter((fil)=>{return fil.fieldStoredValue===res.fieldStoreValue}).map((res)=>{
                                 return <option value={res.fieldOptions}>{res.fieldOptions}</option>
@@ -71,16 +87,18 @@ const PrctForms = () => {
                             </select>
                         </div> 
                         }
-                      </div>
+                      </>
                     })
                   }
                 </Accordion.Body>
               </Accordion.Item>
             })
           }
+              <MultiRow/>
         </Accordion>
       </Container>
     }
+    
     </>
   )
 }

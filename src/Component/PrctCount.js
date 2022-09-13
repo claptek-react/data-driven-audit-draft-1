@@ -8,12 +8,12 @@ const PrctCount = ({proCount,risCount,conCount,tesCount}) => {
   const navigate= useNavigate()
   return (
     <>
-    <div style={{display:'flex',borderBottom:'2px solid black'}}>
-    <div style={{height:'30vh',width:'20vw'}}>
+    <div style={{ borderBottom:'2px solid black'}} className='prctDivCont'>
+    <div>
       <p style={{fontSize:'5vw', marginLeft:'40px',marginTop:'5px'}}>{proCount&& proCount.length+risCount.length+conCount.length+tesCount.length}</p>
       <p style={{color:'#399aca', fontSize:'5vw', marginTop:'-6vh',marginLeft:'1vw'}}><span>Total</span></p>
     </div>
-    <div style={{width:'20vw', paddingLeft:'10px', paddingTop:'25px'}}>
+    <div className='prctConsolDiv'>
     {proCount &&<h4 onClick={()=>{navigate('/Component/PrctRep');dispatch(processRepTitle())&&dispatch(sscDisInvis())&&dispatch(fetchProcessData())
 }}><span style={{color:'#399aca',cursor:'pointer'}}>Process</span> - {proCount.length}</h4>}
     {risCount && <h4 onClick={()=>{navigate('/Component/PrctRep');dispatch(riskRepTitle())&&dispatch(sscDisInvis())&&dispatch(fetchRiskData())}}><span style={{color:'#399aca',cursor:'pointer'}}>Risk</span> - {risCount.length}</h4>}

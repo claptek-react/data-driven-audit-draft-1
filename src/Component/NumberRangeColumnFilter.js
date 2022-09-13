@@ -9,8 +9,8 @@ export const NumberRangeColumnFilter = ({
         preFilteredRows.forEach(row => {
           min = Math.min(row.values[id], min)
           max = Math.max(row.values[id], max)
-          console.log('min = ' + min)
-          console.log('max = ' + max)
+          // console.log('min = ' + min)
+          // console.log('max = ' + max)
         })
         return [min, max]
       }, [id, preFilteredRows])
@@ -25,9 +25,9 @@ export const NumberRangeColumnFilter = ({
             type="date"
             onChange={e => {
               const val = e.target.value
-              console.log('This is val input one'+val)
+              // console.log('This is val input one'+val)
               setFilter((old = []) => [val ? val : undefined, old[1]])
-              console.log(min)
+              // console.log(min)
             }}
             placeholder={`Min (${min})`}
             style={{
@@ -40,9 +40,9 @@ export const NumberRangeColumnFilter = ({
             type="date"
             onChange={e => {
               const val = e.target.value
-              console.log('Thi is val input one'+ val)
+              // console.log('Thi is val input one'+ val)
               setFilter((old = []) => [old[0], val ? val : undefined])
-              console.log(max)
+              // console.log(max)
             }}
             placeholder={`Max (${max})`}
             style={{

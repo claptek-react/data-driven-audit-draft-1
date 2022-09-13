@@ -1,19 +1,51 @@
-.prctCountDiv,.prctBarDiv,.prctDoghnutDiv,.userCountDiv{
-    display: inline-block;
-}
-
-.prctCountDiv{
-margin-left: 1vw;
-margin-top: 0px;
-margin-right: 15vw;
-}
-
-.prctBarDiv{
-    margin-left: 1vw;
-    margin-top: 0vh;
-    margin-right: 20vw;
+.divCont{
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 50vw 45vw;
+    grid-template-rows: 40vh 40vh;
 }
 
 .prctDoghnutDiv{
-    margin-left: -5vw;
+    height: 25vh;
+    width: 25vw;
+}
+
+.prctBarDiv{
+    height: 25vh;
+    width: 38vw;
+    margin-left: 1vw;
+}
+
+.prctCountDiv{
+    margin-left: 1vw;
+}
+
+.prctDivCont{
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 40vw;
+    margin-right: 10vw;
+}
+
+
+.prctConsolDiv{
+    position: absolute;
+    left: 25vw;
+    top: 20vh;
+}
+
+.userConsolDiv{
+    position: absolute;
+    left: 80vw;
+    top: 18vh;
+}
+
+.userDivCont{
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 45vw;
+}
+
+.doghnutTitle{
+    margin-bottom: -5vh;
 }

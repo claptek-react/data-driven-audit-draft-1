@@ -24,12 +24,12 @@ const UserCount = () => {
   },[])
   return (
     <>
-    <div style={{display:'flex',borderBottom:'2px solid black'}}>
-    <div style={{height:'30vh',width:'20vw', marginLeft:'2.5vw'}}>
+    <div style={{borderBottom:'2px solid black'}} className='userDivCont'>
+    <div>
       <p style={{fontSize:'5vw', marginLeft:'40px',marginTop:'5px'}}>{Org1&&Org1.length+Org2.length+Org3.length+Org4.length+Org5.length}</p>
       <p style={{color:'#399aca', fontSize:'5vw', marginTop:'-6vh',marginLeft:'1vw'}}><span>Total</span></p>
     </div>
-    <div style={{width:'20vw', paddingLeft:'10px', paddingTop:'20px'}}>
+    <div className='userConsolDiv'>
     {Org1 &&<h5><span style={{color:'#399aca',cursor:'pointer'}}>Org1</span> - {Org1.length}</h5>}
     {Org2 &&<h5><span style={{color:'#399aca',cursor:'pointer'}}>Org2</span> - {Org2.length}</h5>}
     {Org3 &&<h5><span style={{color:'#399aca',cursor:'pointer'}}>Org3</span> - {Org3.length}</h5>}

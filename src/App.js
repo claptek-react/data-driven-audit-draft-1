@@ -1,6 +1,6 @@
 import './App.css';
 import NavBar from './Component/NavBar';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Routes, Route, useLocation} from 'react-router-dom'
 import User from './Component/User';
 import Org from './Component/Org';
 import LoginPage from './Component/LoginPage';
@@ -17,6 +17,7 @@ import PrctForms from './Component/PrctForms';
 
 function App() {
   const myState = useSelector((state)=>state.loggedInHandler)
+
   return (
     <>
     <Router>

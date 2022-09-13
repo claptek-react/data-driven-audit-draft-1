@@ -2,7 +2,7 @@ import React, {useRef } from 'react'
 import {useNavigate} from 'react-router-dom'
 import {useDispatch,useSelector} from 'react-redux'
 import './Navbar.css'
-import { loggedOut,navDisable, processTitle, riskTitle, controlTitle, testTitle, orgTitle, userTitle, dashboardTitle, auditplanTitle, manageauditTitle, workpaperTitle, auditreportTitle,  sscDisInvis, sscDisVis, processRepTitle, riskRepTitle, testRepTitle,controlRepTitle, fetchPrctFieldData, fetchSection, fetchFormInfoData, getFormId, allTitles, fetchColumn, fetchFieldValue } from '../actions';
+import { loggedOut,navDisable,orgTitle, userTitle, dashboardTitle, sscDisInvis, sscDisVis, allTitles, fetchColumn, fetchFieldValue,fetchSection,fetchPrctFieldData, fetchRepoPrct } from '../actions';
 import { fetchProcessData, fetchControlData, fetchRiskData, fetchTestData } from '../actions';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 
@@ -11,11 +11,10 @@ const NavBar = () => {
   const myState1 = useSelector((state)=>state.navVisibility)
   const myUserState = useSelector((state)=>state.setUserDetails)
   const formInfoState = useSelector((state)=>state.getFormInfoData)
-
-
+  const myNavState = useSelector((state)=>state.getNavElement)
+  const myArmState= useSelector((state)=>state.getArmdata)
 
   const dispatch=useDispatch()
-
 
   const navigate = useNavigate();
 
@@ -39,7 +38,7 @@ const NavBar = () => {
 
   return (
     <>
-    <div style={{display:myState1, position:'sticky',top:'0', zIndex:'999'}}>
+    {/* <div style={{display:myState1, position:'sticky',top:'0px',zIndex:'9999'}}>
     <nav className="navbar navbar-expand-lg navbar-light bg-primary">
      <div className="collapse navbar-collapse" id="navbarNav">
     <ul className="navbar-nav">
@@ -130,13 +129,13 @@ const NavBar = () => {
 }}>
       {
         formInfoState.val.filter((fil)=>{return fil.formInfo==='REPORT'}).map((res)=>{
-          return <Dropdown.Item eventKey={res.formName}>{res.formName}</Dropdown.Item>
+          return <Dropdown.Item eventKey={res.formName} >{res.formName}</Dropdown.Item>
         })
        }
     </DropdownButton>
       </li>
-      <li className="nav-item">
-
+      <li className="nav-item" style={{marginLeft: '48vw',marginRight:'3vw',border:'1px solid black', borderRadius:'7px'}}>
+        <button className='btn btn-primary'>Task</button>
       </li>
       <li>
       <img src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png" alt="Profile" id='ppf' ref={ppf} onMouseOver={ppfDisplay}/>
@@ -151,7 +150,84 @@ const NavBar = () => {
         <p className='had' onClick={()=>{navigate('#')}}>Details</p>
         <button className="btn btn-danger lobtn" onClick={handleLogOut} ref={logOut}>Log Out</button>
       </div>
-    </div>
+    </div> */}
+
+<div style={{display:myState1, position:'sticky',top:'0px',zIndex:'9999'}}>
+    <nav className="navbar navbar-expand-lg navbar-light bg-primary">
+     <div className="collapse navbar-collapse" id="navbarNav">
+    <ul className="navbar-nav">
+      {
+        myNavState.val.map((res)=>{
+          return(
+            <>
+            {
+              res.isDropDown !== 'true' ? 
+              <li className="nav-item" style={{marginRight:'1vw'}}>
+            <DropdownButton
+            title={res.navElement}
+            id="dropdown-menu-align-right"
+            onSelect={(event)=>{
+              const navigateUrl = formInfoState.val.filter((fil)=>{return(fil.formId===event)}).map((nUrl)=>{return(nUrl.navigate)})
+
+
+              const currTitle = formInfoState.val.filter((fil)=>{return fil.formId===event}).map((res)=>{
+                return res.formName
+              })
+              const sscVisibility = formInfoState.val.filter((fil)=>{return fil.formId===event}).map((res)=>{
+                return res.btnVisibility
+              })
+
+              const apiId = formInfoState.val.filter((fil)=>{return fil.formId===event}).map((res)=>{
+                return (res.apiId)
+              })
+
+              const reportStatus = formInfoState.val.filter((fil)=>{return fil.formId===event}).map((res)=>{
+                return (res.isReport)
+              })
+
+              console.log('this is report status '+reportStatus)
+
+              // reportStatus === 'true' ? 
+              if(reportStatus)
+              dispatch(fetchColumn('RPT-101'))
+              dispatch(fetchProcessData())
+                // :
+                console.log(event)
+                dispatch(fetchSection(event))
+                dispatch(fetchPrctFieldData(event))
+                dispatch(fetchFieldValue())
+              
+
+              // console.log(myArmState.val)
+            
+              dispatch(allTitles(currTitle))
+              sscVisibility ==='true' ? dispatch(sscDisInvis()) : dispatch(sscDisVis()) 
+              navigate(navigateUrl[0])
+            }}
+            >
+             {
+              formInfoState.val.filter((fil)=>{return fil.navElementId===res.navElementId}).map((nData)=>{
+                return (
+                <Dropdown.Item eventKey={nData.formId}>{nData.formName}</Dropdown.Item>
+                )
+              })
+             }
+            </DropdownButton>
+                 </li>
+                 :
+                 <li className="nav-item" style={{marginRight:'1vw'}}>
+                 <button className='btn btn-primary' onClick={()=>{return(navigate(res.navigate))}}>{res.navElement}</button>
+               </li>
+            }
+            </>            
+          )
+        })
+      }
+        </ul>
+        </div>
+        </nav>
+        </div>
+    
     </>
   )
 }

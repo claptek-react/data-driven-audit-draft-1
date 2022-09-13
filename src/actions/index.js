@@ -304,33 +304,123 @@ export const getFieldValueError = (fValue)=>{
     }
 }
 
-export const getDashboardDataReq = (dVal)=>{
+export const getDashReq = (dData)=>{
     return{
-        type : 'getdashboarddatareq',
-        payload : dVal
+        type : 'getdashreq',
+        payload : dData
     }
 }
 
-export const getDashboardDataSuccess = (dVal)=>{
+export const getDashSuccess = (dData)=>{
     return{
-        type : 'getdashboarddatasuccess',
-        payload : dVal
+        type : 'getdashsuccess',
+        payload : dData
     }
 }
 
-export const getDashboardDataError = (dVal)=>{
+export const getDashError = (dData) =>{
     return{
-        type : 'getdashboarddataerror',
-        payload : dVal
+        type : 'getdasherror',
+        payload : dData
     }
 }
 
+export const getNavElementReq =(navData) =>{
+    return{
+        type :'getnavelement',
+        payload : navData,
+    }
+}
+
+export const getNavElementSuccess = (navData)=>{
+    return{
+        type:'getnavelementsuccess',
+        payload : navData,
+    }
+}
+
+export const getNavElementError = (navData) =>{
+    return{
+        type : 'getnavelementerror',
+        payload:navData,
+    }
+}
+
+export const getUserAuthReq = (userData)=>{
+    return{
+        type: 'getuserauthreq',
+        payload : userData
+    }
+}
+
+export const getUserAuthSuccess = (userData)=>{
+    return{
+        type : 'getuserauthsuccess',
+        payload : userData
+    }
+}
+
+export const getUserAuthError = (userData) =>{
+    return{
+        type :'getuserautherror',
+        payload : userData
+    }
+}
+
+export const apiRepoManageReq = (apiId) => {
+    return{
+        type:'apirepomanagereq',
+        payload : apiId
+    }
+}
+
+export const apiRepoManageSuccess = (apiId) =>{
+    return{
+        type:'apirepomanagesuccess',
+        payload : apiId
+    }
+}
+
+export const apiRepoManageError = (apiId) =>{
+    return{
+        type : 'apirepomanageerror',
+        payload : apiId
+    }
+}
+
+export const multiRowCarrier = (mValue) =>{
+    return{
+        type : 'multirowcarrier',
+        payload : mValue
+    }
+}
+
+export const postMultiFieldDataReq = (postData)=>{
+    return{
+        type : 'postmultifielddatareq',
+        payload : postData
+    }
+}
+
+export const postMultiFieldDataSuccess = (postData)=>{
+    return{
+        type : 'postmultifielddatasuccess',
+        payload : postData
+    }
+}
+
+export const postMultiFieldDataError = (postData)=>{
+    return{
+        type : 'postmultifielddataerror',
+        payload : postData
+    }
+}
 
 
 export const fetchProcessData = ()=>{
     return function(dispatch){
         dispatch(getProcessDataReq())
-        axios.get('http://localhost:8080/audit/Process')
+        axios.get('http://localhost:8080/audit/FetchProcess')
         .then((res)=>{
             const prctDt = res.data.map((prctP=>prctP))
             dispatch(getProcessDataSuccess(prctDt))
@@ -346,7 +436,7 @@ export const fetchProcessData = ()=>{
 export const fetchRiskData = ()=>{
     return function(dispatch){
         dispatch(getProcessDataReq())
-        axios.get('http://localhost:8080/audit/Risk')
+        axios.get('http://localhost:8080/audit/FetchRisk')
         .then((res)=>{
             const prctDt = res.data.map((prctP=>prctP))
             dispatch(getProcessDataSuccess(prctDt))
@@ -361,7 +451,7 @@ export const fetchRiskData = ()=>{
 export const fetchControlData = ()=>{
     return function(dispatch){
         dispatch(getProcessDataReq())
-        axios.get('http://localhost:8080/audit/Control')
+        axios.get('http://localhost:8080/audit/FetchControl')
         .then((res)=>{
             const prctDt = res.data.map((prctP=>prctP))
             dispatch(getProcessDataSuccess(prctDt))
@@ -375,7 +465,7 @@ export const fetchControlData = ()=>{
 export const fetchTestData = ()=>{
     return function(dispatch){
         dispatch(getProcessDataReq())
-        axios.get('http://localhost:8080/audit/Test')
+        axios.get('http://localhost:8080/audit/FetchTest')
         .then((res)=>{
             const prctDt = res.data.map((prctP=>prctP))
             dispatch(getProcessDataSuccess(prctDt))
@@ -456,6 +546,20 @@ export const postFields = (frmName,frmObj)=>{
     }
 }
 
+export const postMultiFields = (multiObj)=>{
+    return function(dispatch){
+        dispatch(postMultiFieldDataReq())
+        axios.put(`http://localhost:8080/audit/ABCProcess`,multiObj)
+        .then((res)=>{
+            const mulData = res.data.map((mulData=>mulData))
+            dispatch(postMultiFieldDataSuccess(mulData))
+        })
+        .catch((err)=>{
+            dispatch(postMultiFieldDataError(err))
+        })
+    }
+}
+
 export const fetchFieldValue = () =>{
     return function(dispatch){
         dispatch(getFieldValueReq())
@@ -466,6 +570,62 @@ export const fetchFieldValue = () =>{
         })
         .catch((err)=>{
             dispatch(getFieldValueError(err))
+        })
+    }
+}
+
+export const fetchDashValue = () =>{
+    return function(dispatch){
+        dispatch(getDashReq())
+        axios.get(`http://localhost:8080/audit/Dashboard`)
+        .then((res)=>{
+            const fVData = res.data.map((fVData=>fVData))
+            dispatch(getDashSuccess(fVData))
+        })
+        .catch((err)=>{
+            dispatch(getDashError(err))
+        })
+    }
+}
+
+export const fetchNavValue = () =>{
+    return function(dispatch){
+        dispatch(getNavElementReq())
+        axios.get(`http://localhost:8080/audit/FetchNavElement`)
+        .then((res)=>{
+            const fVData = res.data.map((fVData=>fVData))
+            dispatch(getNavElementSuccess(fVData))
+        })
+        .catch((err)=>{
+            dispatch(getNavElementError(err))
+        })
+    }
+}
+
+export const fetchUserAuth = ()=>{
+    return function(dispatch){
+        dispatch(getUserAuthReq())
+        axios.get(`http://localhost:8080/audit/User`) 
+        .then((res)=>{
+            const uAData = res.data.map((uAData=>uAData))
+            dispatch(getUserAuthSuccess(uAData))
+        })
+        .catch((err)=>{
+            dispatch(getUserAuthError(err))
+        })
+    }
+}
+
+export const fetchRepoPrct = (apiId)=>{
+    return function(dispatch){
+        dispatch(apiRepoManageReq ())
+        axios.get(`http://localhost:8080/audit/apiManagement/${apiId}`) 
+        .then((res)=>{
+            const Armdata = res.data.map((Armdata=>Armdata))
+            dispatch(apiRepoManageSuccess(Armdata))
+        })
+        .catch((err)=>{
+            dispatch(apiRepoManageError(err))
         })
     }
 }

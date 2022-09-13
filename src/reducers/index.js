@@ -12,6 +12,12 @@ import { setFormId } from "./FormIdCarrier";
 import { getColumnData } from "./ColData";
 import { postFormdata } from "./FieldData";
 import { getFieldValueData } from "./FieldValueData";
+import { getDashboardData } from "./DashboardData";
+import { getNavElement } from "./NavElement";
+import { getUserAuth } from "./UserAuth";
+import { getArmdata } from "./ArmData";
+import { getMultiRowData } from "./MultiRowData";
+import { postMultiFormdata } from "./PostMultiFields";
 
 const rootReducer = combineReducers({
     loggedInHandler,
@@ -30,6 +36,12 @@ const rootReducer = combineReducers({
     getColumnData,
     postFormdata,
     getFieldValueData,
+    getDashboardData,
+    getNavElement,
+    getUserAuth,
+    getArmdata,
+    getMultiRowData,
+    postMultiFormdata,
 })
 
 export default rootReducer
