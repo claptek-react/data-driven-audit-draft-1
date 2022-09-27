@@ -12,13 +12,12 @@ const UserCount = () => {
   
   useEffect(()=>{
     const expensesListResp = async () => {
-        const userCount = await axios.get('http://localhost:8080/audit/User')
+        const userCount = await axios.get('http://localhost:8080/audit/FetchUser')
         setOrg1(userCount.data.filter((res)=>res.organization ==="0rg 1"))
         setOrg2(userCount.data.filter((res)=>res.organization ==="0rg 2"))
         setOrg3(userCount.data.filter((res)=>res.organization ==="0rg 3"))
         setOrg4(userCount.data.filter((res)=>res.organization ==="0rg 4"))
         setOrg5(userCount.data.filter((res)=>res.organization ==="0rg 5"))
-
       }
     expensesListResp()
   },[])

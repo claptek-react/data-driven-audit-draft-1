@@ -5,18 +5,18 @@ const initialPrctval = {
 }
 
 
-export const getArmdata = (state=initialPrctval,action)=>{
+export const getRiskDashData = (state=initialPrctval,action)=>{
 
     switch(action.type){
-        case 'apirepomanagereq' : return{
+        case 'getriskdashreq' : return{
             ...state, loading:true
         }
         
-        case 'apirepomanagesuccess' : return{
+        case 'getriskdashsuccess' : return{
             loading:false, val:action.payload, error:''
         }
 
-        case 'apirepomanageerror' : return{
+        case 'getriskdasherror' : return{
             loading:true, val:[], error:action.payload
         }
 

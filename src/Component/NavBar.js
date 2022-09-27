@@ -1,10 +1,11 @@
 import React, {useRef } from 'react'
 import {useNavigate} from 'react-router-dom'
-import {useDispatch,useSelector} from 'react-redux'
+import {batch, useDispatch,useSelector} from 'react-redux'
 import './Navbar.css'
-import { loggedOut,navDisable,orgTitle, userTitle, dashboardTitle, sscDisInvis, sscDisVis, allTitles, fetchColumn, fetchFieldValue,fetchSection,fetchPrctFieldData, fetchRepoPrct } from '../actions';
+import { loggedOut,navDisable,orgTitle, userTitle, dashboardTitle, sscDisInvis, sscDisVis, allTitles, fetchColumn, fetchFieldValue,fetchSection,fetchPrctFieldData, fetchRepoPrct, getFormId } from '../actions';
 import { fetchProcessData, fetchControlData, fetchRiskData, fetchTestData } from '../actions';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
+import { fetchApiId } from '../actions/ApiRepo/GetApiId';
 
 export let navAuditType;
 const NavBar = () => {
@@ -47,8 +48,8 @@ const NavBar = () => {
       title="Library"
       id="dropdown-menu-align-right"
       onSelect={(event)=>{
-        dispatch(fetchSection(event))
-        dispatch(fetchPrctFieldData(event))
+        dispatch(fetchSection('Form-101'))
+        dispatch(fetchPrctFieldData('Form-101'))
         dispatch(fetchFieldValue())
         navigate('/Component/PrctForms')
         const currTitle = formInfoState.val.filter((fil)=>{return fil.formId===event}).map((res)=>{
@@ -169,36 +170,18 @@ const NavBar = () => {
             onSelect={(event)=>{
               const navigateUrl = formInfoState.val.filter((fil)=>{return(fil.formId===event)}).map((nUrl)=>{return(nUrl.navigate)})
 
-
               const currTitle = formInfoState.val.filter((fil)=>{return fil.formId===event}).map((res)=>{
                 return res.formName
               })
+
               const sscVisibility = formInfoState.val.filter((fil)=>{return fil.formId===event}).map((res)=>{
                 return res.btnVisibility
               })
-
-              const apiId = formInfoState.val.filter((fil)=>{return fil.formId===event}).map((res)=>{
-                return (res.apiId)
-              })
-
-              const reportStatus = formInfoState.val.filter((fil)=>{return fil.formId===event}).map((res)=>{
-                return (res.isReport)
-              })
-
-              console.log('this is report status '+reportStatus)
-
-              // reportStatus === 'true' ? 
-              if(reportStatus)
-              dispatch(fetchColumn('RPT-101'))
-              dispatch(fetchProcessData())
-                // :
-                console.log(event)
-                dispatch(fetchSection(event))
-                dispatch(fetchPrctFieldData(event))
-                dispatch(fetchFieldValue())
+console.log(event)
+console.log(navigateUrl)
+                dispatch(fetchApiId(event,'FETCH'))
+                dispatch(getFormId(event))
               
-
-              // console.log(myArmState.val)
             
               dispatch(allTitles(currTitle))
               sscVisibility ==='true' ? dispatch(sscDisInvis()) : dispatch(sscDisVis()) 
@@ -216,7 +199,11 @@ const NavBar = () => {
                  </li>
                  :
                  <li className="nav-item" style={{marginRight:'1vw'}}>
-                 <button className='btn btn-primary' onClick={()=>{return(navigate(res.navigate))}}>{res.navElement}</button>
+                 <button className='btn btn-primary' onClick={()=>{
+                                const currTitle = myNavState.val.filter((fil)=>{return fil.navElementId===res.navElementId}).map((res)=>{
+                                  return res.navElement
+                                })
+                  return(batch(()=>{dispatch(allTitles(currTitle));dispatch(fetchApiId(res.navElementId)); navigate(res.navigate)}))}}>{res.navElement}</button>
                </li>
             }
             </>            
@@ -224,6 +211,14 @@ const NavBar = () => {
         })
       }
         </ul>
+        </div>
+        <img src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png" alt="Profile" id='ppf' ref={ppf} onMouseOver={ppfDisplay}/>
+        <div id='cardDiv' ref={cardDiv} onMouseOver={()=>ppfDisplay()} onMouseOut={()=>ppfDisplayInv()}>
+        <p style={{marginLeft:'1vw', marginTop:'2vh'}}><img src="https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_960_720.png" alt="" style={{height:'8vh', width:'4vw', borderRadius:'20px'}}/> <strong style={{fontWeight:'bolder', fontStyle:'italic', fontSize:'25px'}}>{myUserState}</strong></p>
+        <p className='had' onClick={()=>{navigate('#')}}>Help</p>
+        <p className='had' onClick={()=>{navigate('#')}}>About</p>
+        <p className='had' onClick={()=>{navigate('#')}}>Details</p>
+        <button className="btn btn-danger lobtn" onClick={handleLogOut} ref={logOut}>Log Out</button>
         </div>
         </nav>
         </div>

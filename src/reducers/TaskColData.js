@@ -4,23 +4,25 @@ const initialPrctval = {
     error:''
 }
 
-export const getProcessData = (state=initialPrctval,action) => {
+
+export const getTaskColumnData = (state=initialPrctval,action)=>{
 
     switch(action.type){
-        case 'getprocessdatareq' : return{
+        case 'gettaskcolumndatareq' : return{
             ...state, loading:true
         }
-
-        case 'getprocessdatasuccess' : return{
+        
+        case 'gettaskcolumndatasuccess' : return{
             loading:false, val:action.payload, error:''
         }
 
-        case 'getprocessdataerror' : return{
+        case 'gettaskcolumndataerror' : return{
             loading:true, val:[], error:action.payload
         }
 
         default :return state
     }
-
 }
+
+
 

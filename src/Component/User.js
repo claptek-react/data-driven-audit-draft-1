@@ -41,7 +41,7 @@ const User = () => {
         role: field13.current.value,
       }
     }
-    axios.post('http://localhost:8080/audit/user',uDataObj.uData)
+    axios.post('http://localhost:8080/audit/FetchUser',uDataObj.uData)
     .then((res)=>{console.log(res)})
     .catch((err)=>console.warn(err))
     navigate('/Component/Dashboard'); dispatch(dashboardTitle()); dispatch(sscDisInvis())

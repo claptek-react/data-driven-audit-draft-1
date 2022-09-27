@@ -5,20 +5,28 @@ import Loader from './Loader';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Process.css'
 import { useRef } from 'react';
-import {useNavigate} from 'react-router-dom'
+import {useLocation, useNavigate} from 'react-router-dom'
 import Head from './Head';
-import { multiRowCarrier, postFields, postMultiFields } from '../actions';
+import { postFields, postMultiFields } from '../actions';
 import MultiRow from './MultiRow';
 import './Process.css'
 import { useEffect } from 'react';
-import { getMultiRowData } from '../reducers/MultiRowData';
+import { useState } from 'react';
+import { fetchApiId } from '../actions/ApiRepo/GetApiId';
 
 const PrctForms = () => {
+  // const location = useLocation()
     const SectionState = useSelector((state)=>state.getSectionData);
     const fieldState = useSelector((state)=>state.getPrctFieldData);
     const formNameState = useSelector((state)=>state.toggleTitle);
     const myFieldValueState = useSelector((State)=>State.getFieldValueData)
+    var myApiData = useSelector((state)=>state.getApiDataRed)
     const myMultiState = useSelector((state)=>state.getMultiRowData)
+    const formIdState = useSelector((state)=>state.setFormId)
+    const [val,setval] = useState()
+
+    useEffect(()=>{console.log(formIdState)},[formIdState])
+    // useEffect(()=>{console.log(location.state.data)},[])
 
     const fieldArray = useRef([])
     const navigate = useNavigate()
@@ -32,33 +40,34 @@ const PrctForms = () => {
           obj[fieldArray.current[i].id]=fieldArray.current[i].value
           )
       })
+
       objIdVal=obj.objId;
 
       myMultiState.forEach((item,index)=>{myMultiState[index].objId=objIdVal})
       // myMultiState.forEach((item,index)=>{myMultiState[index].muABCKey=objIdVal})
 
 
-      console.log(myMultiState)
+      console.log('obj'+JSON.stringify( obj))
+      console.log('myMultiState'+JSON.stringify(myMultiState))
+
       
       const fName = (formNameState[0].substring(0,formNameState[0].indexOf(' '))).toLowerCase();
 
-      console.log(myMultiState)
-      dispatch(postFields(fName,obj))
+      dispatch(fetchApiId(formIdState,'SubmitNonMultirow',obj,myMultiState))
       for (let i = 0; i <= myMultiState.length; i++) {
-        dispatch(postMultiFields(myMultiState[i]))
+        dispatch(fetchApiId(formIdState,'SubmitMultirow',obj,myMultiState[i]))
       }
-      console.log(objIdVal)
+
       navigate('/Component/Dashboard')
     }
 
-useEffect(()=>{console.log(myMultiState)},[myMultiState])
 
 
   return (
     <>
     <Head Btn1='Save' Btn2='Submit' Btn3='Close' callGetField={getFields}/>
     {
-      SectionState.loading ? <Loader/> : <Container className='accCont'>
+      SectionState.loading ? <Loader/> : myApiData.loading ? <Loader/> : <Container className='accCont'>
         <Accordion defaultActiveKey={SectionState.val[0].sectionId}>
           {
             SectionState.val.map((res)=>{
@@ -73,7 +82,7 @@ useEffect(()=>{console.log(myMultiState)},[myMultiState])
                           res.fieldType!== 'select' ?
                           <div className='form-group' style={{display:res.displayField,width:res.widthOfField}}>
                             <label htmlFor={res.fieldStoreValue}>{res.fieldLableValue}</label>
-                            <input type={res.fieldType} className="form-control" id={res.fieldStoreValue} ref={(ele)=>fieldArray.current.push(ele)}  readOnly={res.readOnlyField} style={{height:res.heightOfField,width:res.widthOfField}}></input>
+                            <input type={res.fieldType} className="form-control" id={res.fieldStoreValue} ref={(ele)=>fieldArray.current.push(ele)}  readOnly={res.readOnlyField} style={{height:res.heightOfField,width:res.widthOfField}} value={val} onChange={()=>{setval(val)}}></input>
                             </div>
                             :
                         <div style={{display:res.displayField,width:res.widthOfField}} >

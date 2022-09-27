@@ -1,10 +1,11 @@
 import React, { useRef} from 'react'
 import {useNavigate} from 'react-router-dom'
 import './Login.css'
-import { useDispatch,useSelector} from 'react-redux';
+import { batch, useDispatch,useSelector} from 'react-redux';
 import { dashboardTitle,fetchUserAuth,loggedIn, loggedOut, navDisable, navEnable,sscDisInvis,userName } from '../actions';
 import Loader from './Loader';
 import { useEffect } from 'react';
+import { fetchApiId } from '../actions/ApiRepo/GetApiId';
 
 const LoginPage = () => {
   const myUserState = useSelector((state)=>state.getUserAuth)
@@ -16,7 +17,9 @@ const LoginPage = () => {
   let chkPass  = useRef();
 
   useEffect(()=>{
-    dispatch(fetchUserAuth())
+    dispatch(fetchApiId('User-101'))
+    dispatch(fetchApiId("NAV-104"))
+
   },[])
 
   const handleLogIn = (username,password)=>{
@@ -27,17 +30,29 @@ const LoginPage = () => {
     password = myUserState.val.filter((fil)=>{return fil.userName === userValue}).map((res)=>{return res.id})
     dispatch(userName(userValue));
 
-    if(username.includes(userValue) && password.includes(passValue)){
-      return(
-      dispatch(navEnable())&&dispatch(loggedIn())&&dispatch(dashboardTitle())&&dispatch(sscDisInvis())&&navigate('/Component/Dashboard')
-      )
-    }
-    else{
-      return (
-      dispatch(navDisable())&& dispatch(loggedOut())&&navigate('/'),
+
+    username.includes(userValue) ? (password.includes(passValue) ? batch(()=>{
+      dispatch(navEnable());
+      dispatch(loggedIn());
+      dispatch(dashboardTitle());
+      dispatch(sscDisInvis());
+      dispatch(fetchApiId('ELE-101'))
+      navigate('Component/Dashboard');
+    }) : batch(()=>{dispatch(navDisable());dispatch(loggedOut());navigate('/')}) ) :  batch(()=>{
+      dispatch(navDisable()); dispatch(loggedOut());navigate('/');
       alert('Invalid Username or password')
-      )
-    }
+    })
+    // if(username.includes(userValue) && password.includes(passValue)){
+    //   return(
+    //   dispatch(navEnable())&&dispatch(loggedIn())&&dispatch(dashboardTitle())&&dispatch(sscDisInvis())&&navigate('/Component/Dashboard')
+    //   )
+    // }
+    // else{
+    //   return (
+    //   dispatch(navDisable())&& dispatch(loggedOut())&&navigate('/'),
+    //   alert('Invalid Username or password')
+    //   )
+    // }
   }
 
 

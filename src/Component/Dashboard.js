@@ -1,45 +1,29 @@
 import React,{useEffect,useState} from 'react'
-import axios from 'axios'
 import PrctBar from './PrctBar'
 import PrctCount from './PrctCount'
 import PrctDonut from './PrctDonut'
 import {Chart as ChartJS} from 'chart.js/auto'
 import UserCount from './UserCount'
 import Loader from './Loader'
-import { useDispatch, useSelector,} from 'react-redux'
-import {fetchDashValue, fetchFormInfoData, fetchNavValue, fetchPrctFieldData, fetchSection,  } from '../actions'
+import {useSelector,} from 'react-redux'
 
 
 const Dashboard = () => {
-  const [proCount, setproCount] = useState([])
-  const [risCount,setrisCount] = useState()
-  const [conCount, setconCount] = useState()
-  const [tesCount,settesCount] = useState()
-  const [loading,setloading] = useState(false)
-  const dispatch = useDispatch()
+  const myProcessState = useSelector((state)=>state.getProcessDashData)
+  const myRiskState = useSelector((state)=>state.getRiskDashData)
+  const myControlState = useSelector((state)=>state.getControlDashData)
+  const myTestState = useSelector((state)=>state.getTestDashData)
+  const dashState = useSelector((state)=>state.getDashboardData)
+  var myApiData = useSelector((state)=>state.getApiDataRed)
 
-useEffect(()=>{
-  const expensesListResp = async () => {
-      await axios.get('http://localhost:8080/audit/FetchProcess').then((res)=>{setproCount(res.data)})
-      await axios.get('http://localhost:8080/audit/FetchRisk').then((res)=>{setrisCount(res.data); })
-      await axios.get('http://localhost:8080/audit/FetchControl').then((res)=>{setconCount(res.data); })
-      await axios.get('http://localhost:8080/audit/FetchTest').then((res)=>{settesCount(res.data); setloading(true);})
-    }
-  expensesListResp()
-  dispatch(fetchFormInfoData())
-  dispatch(fetchSection())
-  dispatch(fetchPrctFieldData())
-  dispatch(fetchDashValue())
-  dispatch(fetchNavValue())
-},[])
 
   return (
     <>
         {/* <Head Btn1='Save' Btn2='Submit' Btn3='Close'/> */}
-    { loading ? <div className='divCont'>
+    { myApiData.loading ? <Loader/> : myRiskState.loading ? <Loader/> : myControlState.loading ? <Loader/> : myTestState.loading ? <Loader/> : myProcessState.loading ? <Loader/> : dashState.loading ? <Loader/> : <div className='divCont'>
         <div className='prctCountDiv'>
           <h4>PRCT Count</h4>
-          <PrctCount proCount={proCount} risCount={risCount} conCount={conCount} tesCount={tesCount}/>
+          <PrctCount proCount={myProcessState.val} risCount={myRiskState.val} conCount={myControlState.val} tesCount={myTestState.val}/>
         </div>
         <div className='userCountDiv'>
           <h4>User Count</h4>
@@ -47,13 +31,13 @@ useEffect(()=>{
         </div>
         <div className='prctBarDiv'> 
         <h4>PRCT Bar Chart</h4>
-        < PrctBar proCount={proCount} risCount={risCount} conCount={conCount} tesCount={tesCount} />
+        < PrctBar proCount={myProcessState.val} risCount={myRiskState.val} conCount={myControlState.val} tesCount={myTestState.val} />
         </div>
         <div className='prctDoghnutDiv'>
           <h4 className='doghnutTitle'>PRCT Doghnut Chart</h4>
-        <PrctDonut proCount={proCount} risCount={risCount} conCount={conCount} tesCount={tesCount} />
+        <PrctDonut proCount={myProcessState.val} risCount={myRiskState.val} conCount={myControlState.val} tesCount={myTestState.val} />
         </div>
-    </div> : <Loader/>}
+    </div>}
     </>
   )
 }

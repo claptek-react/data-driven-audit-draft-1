@@ -13,6 +13,7 @@ import { WorkPaper } from './Component/WorkPaper';
 import { AuditReport } from './Component/AuditReport';
 import PrctRep from './Component/PrctRep';
 import PrctForms from './Component/PrctForms';
+import Task from './Component/Task';
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
         <Route path = '/Component/Org' element={<Org/>}/>
         <Route path='/Component/PrctRep' element={<PrctRep/>}/>
         <Route path='/Component/PrctForms' element={<PrctForms/>}/>
+        <Route path='/Component/Task' element={<Task/>}/>
         </Route>
       </Routes>
     </div>

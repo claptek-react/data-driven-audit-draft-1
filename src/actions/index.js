@@ -262,6 +262,27 @@ export const getColumnDataError = (getData)=>{
     }
 }
 
+export const getTaskColumnDataReq = (getData)=>{
+    return{
+        type : 'gettaskcolumndatareq',
+        payload : getData
+    }
+}
+
+export const getTaskColumnDataSuccess = (getData)=>{
+    return{
+        type : 'gettaskcolumndatasuccess',
+        payload :getData
+    }
+}
+
+export const getTaskColumnDataError = (getData)=>{
+    return{
+        type : 'gettaskcolumndataerror',
+        payload : getData
+    }
+}
+
 export const postFieldDataReq = (postData)=>{
     return{
         type : 'postfielddatareq',
@@ -304,26 +325,6 @@ export const getFieldValueError = (fValue)=>{
     }
 }
 
-export const getDashReq = (dData)=>{
-    return{
-        type : 'getdashreq',
-        payload : dData
-    }
-}
-
-export const getDashSuccess = (dData)=>{
-    return{
-        type : 'getdashsuccess',
-        payload : dData
-    }
-}
-
-export const getDashError = (dData) =>{
-    return{
-        type : 'getdasherror',
-        payload : dData
-    }
-}
 
 export const getNavElementReq =(navData) =>{
     return{
@@ -417,10 +418,10 @@ export const postMultiFieldDataError = (postData)=>{
 }
 
 
-export const fetchProcessData = ()=>{
+export const fetchProcessData = (api)=>{
     return function(dispatch){
         dispatch(getProcessDataReq())
-        axios.get('http://localhost:8080/audit/FetchProcess')
+        axios.get(`${api}`)
         .then((res)=>{
             const prctDt = res.data.map((prctP=>prctP))
             dispatch(getProcessDataSuccess(prctDt))
@@ -433,53 +434,10 @@ export const fetchProcessData = ()=>{
 
 
 
-export const fetchRiskData = ()=>{
-    return function(dispatch){
-        dispatch(getProcessDataReq())
-        axios.get('http://localhost:8080/audit/FetchRisk')
-        .then((res)=>{
-            const prctDt = res.data.map((prctP=>prctP))
-            dispatch(getProcessDataSuccess(prctDt))
-        })
-        .catch((err)=>{
-            dispatch(getProcessDataError(err))
-        })
-    }
-}
-
-
-export const fetchControlData = ()=>{
-    return function(dispatch){
-        dispatch(getProcessDataReq())
-        axios.get('http://localhost:8080/audit/FetchControl')
-        .then((res)=>{
-            const prctDt = res.data.map((prctP=>prctP))
-            dispatch(getProcessDataSuccess(prctDt))
-        })
-        .catch((err)=>{
-            dispatch(getProcessDataError(err))
-        })
-    }
-}
-
-export const fetchTestData = ()=>{
-    return function(dispatch){
-        dispatch(getProcessDataReq())
-        axios.get('http://localhost:8080/audit/FetchTest')
-        .then((res)=>{
-            const prctDt = res.data.map((prctP=>prctP))
-            dispatch(getProcessDataSuccess(prctDt))
-        })
-        .catch((err)=>{
-            dispatch(getProcessDataError(err))
-        })
-    }
-}
-
-export const fetchPrctFieldData = (frmId)=>{
+export const fetchPrctFieldData = (api,frmId)=>{
     return function(dispatch){
         dispatch(getPrctFieldReq())
-        axios.get(`http://localhost:8080/audit/Field/${frmId}`)
+        axios.get(`${api}/${frmId}`)
         .then((res)=>{
             const prctDt = res.data.map((prctP=>prctP))
             dispatch(getPrctFieldSuccess(prctDt))
@@ -490,10 +448,10 @@ export const fetchPrctFieldData = (frmId)=>{
     }
 } 
 
-export const fetchFormInfoData = ()=>{
+export const fetchFormInfoData = (api)=>{
     return function(dispatch){
         dispatch(getFormInfoReq())
-        axios.get('http://localhost:8080/audit/FormInfo')
+        axios.get(`${api}`)
         .then((res)=>{
             const prctDt = res.data.map((prctP=>prctP))
             dispatch(getFormInfoSuccess(prctDt))
@@ -504,10 +462,10 @@ export const fetchFormInfoData = ()=>{
     }
 } 
 
-export const fetchSection = (frmId)=>{
+export const fetchSection = (api,frmId)=>{
     return function(dispatch){
         dispatch(getSectionReq())
-        axios.get(`http://localhost:8080/audit/FormSection/${frmId}`)
+        axios.get(`${api}/${frmId}`)
         .then((res)=>{
             const prctDt = res.data.map((prctP=>prctP))            
             dispatch(getSectionSuccess(prctDt))
@@ -518,10 +476,10 @@ export const fetchSection = (frmId)=>{
     }
 } 
 
-export const fetchColumn = (frmId) =>{
+export const fetchColumn = (api,frmId) =>{
     return function(dispatch){
         dispatch(getColumnDataReq())
-        axios.get(`http://localhost:8080/audit/FormConfig/${frmId}`)
+        axios.get(`${api}/${frmId}`)
         .then((res)=>{
             const colData = res.data.map((colData=>colData))
             dispatch(getColumnDataSuccess(colData))
@@ -532,11 +490,26 @@ export const fetchColumn = (frmId) =>{
     }
 }
 
-export const postFields = (frmName,frmObj)=>{
+export const fetchTaskColumn = (api,frmId) =>{
+    return function(dispatch){
+        dispatch(getTaskColumnDataReq())
+        axios.get(`${api}/${frmId}`)
+        .then((res)=>{
+            const colData = res.data.map((colData=>colData))
+            dispatch(getTaskColumnDataSuccess(colData))
+        })
+        .catch((err)=>{
+            dispatch(getTaskColumnDataError(err))
+        })
+    }
+}
+
+export const postFields = (api,frmObj)=>{
     return function(dispatch){
         dispatch(postFieldDataReq())
-        axios.put(`http://localhost:8080/audit/${frmName}`,frmObj)
+        axios.put(`${api}`,frmObj)
         .then((res)=>{
+            console.log('Inside postFields frmObj = ' + JSON.stringify(frmObj) + ' api = ' + api);
             const filData = res.data.map((filData=>filData))
             dispatch(postFieldDataSuccess(filData))
         })
@@ -546,10 +519,10 @@ export const postFields = (frmName,frmObj)=>{
     }
 }
 
-export const postMultiFields = (multiObj)=>{
+export const postMultiFields = (api,multiObj)=>{
     return function(dispatch){
         dispatch(postMultiFieldDataReq())
-        axios.put(`http://localhost:8080/audit/ABCProcess`,multiObj)
+        axios.put(`${api}`,multiObj)
         .then((res)=>{
             const mulData = res.data.map((mulData=>mulData))
             dispatch(postMultiFieldDataSuccess(mulData))
@@ -560,11 +533,12 @@ export const postMultiFields = (multiObj)=>{
     }
 }
 
-export const fetchFieldValue = () =>{
+export const fetchFieldValue = (api) =>{
     return function(dispatch){
         dispatch(getFieldValueReq())
-        axios.get(`http://localhost:8080/audit/FieldValue`)
+        axios.get(`${api}`)
         .then((res)=>{
+            console.log('fetchFieldValue => ' + api) 
             const fVData = res.data.map((fVData=>fVData))
             dispatch(getFieldvalueSuccess(fVData))
         })
@@ -574,24 +548,12 @@ export const fetchFieldValue = () =>{
     }
 }
 
-export const fetchDashValue = () =>{
-    return function(dispatch){
-        dispatch(getDashReq())
-        axios.get(`http://localhost:8080/audit/Dashboard`)
-        .then((res)=>{
-            const fVData = res.data.map((fVData=>fVData))
-            dispatch(getDashSuccess(fVData))
-        })
-        .catch((err)=>{
-            dispatch(getDashError(err))
-        })
-    }
-}
 
-export const fetchNavValue = () =>{
+
+export const fetchNavValue = (api) =>{
     return function(dispatch){
         dispatch(getNavElementReq())
-        axios.get(`http://localhost:8080/audit/FetchNavElement`)
+        axios.get(`${api}`)
         .then((res)=>{
             const fVData = res.data.map((fVData=>fVData))
             dispatch(getNavElementSuccess(fVData))
@@ -602,30 +564,16 @@ export const fetchNavValue = () =>{
     }
 }
 
-export const fetchUserAuth = ()=>{
+export const fetchUserAuth = (api)=>{
     return function(dispatch){
         dispatch(getUserAuthReq())
-        axios.get(`http://localhost:8080/audit/User`) 
+        axios.get(`${api}`) 
         .then((res)=>{
             const uAData = res.data.map((uAData=>uAData))
             dispatch(getUserAuthSuccess(uAData))
         })
         .catch((err)=>{
             dispatch(getUserAuthError(err))
-        })
-    }
-}
-
-export const fetchRepoPrct = (apiId)=>{
-    return function(dispatch){
-        dispatch(apiRepoManageReq ())
-        axios.get(`http://localhost:8080/audit/apiManagement/${apiId}`) 
-        .then((res)=>{
-            const Armdata = res.data.map((Armdata=>Armdata))
-            dispatch(apiRepoManageSuccess(Armdata))
-        })
-        .catch((err)=>{
-            dispatch(apiRepoManageError(err))
         })
     }
 }

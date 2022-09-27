@@ -1,13 +1,17 @@
 import React, {useEffect, useMemo} from 'react'
 import {useTable,usePagination, useSortBy, useFilters, useGlobalFilter,} from 'react-table'
 import './Table.css'
-import {useSelector } from 'react-redux'
+import {batch, useDispatch, useSelector } from 'react-redux'
 import GlobalFilter from './GlobalFilter'
 import Download from './Download'
 import ColumnFilter from './ColumnFilter'
+import { useNavigate } from 'react-router-dom'
+import { fetchApiId } from '../actions/ApiRepo/GetApiId'
 
 
 export const Table = ({column,prctvaldata}) => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const myPrctState = useSelector((state)=> state.getProcessData);
 
@@ -85,7 +89,7 @@ export const Table = ({column,prctvaldata}) => {
             {page.map((row) => {
                 prepareRow(row)
                 return (
-                <tr {...row.getRowProps()}>
+                <tr {...row.getRowProps()} onClick={()=>{console.log(row.values.formId)}}>
                     {
                      row.cells.map( cell => {
                     return <td {...cell.getCellProps()}>{cell.render('Cell')} </td>

@@ -4,23 +4,25 @@ const initialPrctval = {
     error:''
 }
 
-export const getProcessData = (state=initialPrctval,action) => {
+
+export const getTestDashData = (state=initialPrctval,action)=>{
 
     switch(action.type){
-        case 'getprocessdatareq' : return{
+        case 'gettestdashreq' : return{
             ...state, loading:true
         }
-
-        case 'getprocessdatasuccess' : return{
+        
+        case 'gettestdashsuccess' : return{
             loading:false, val:action.payload, error:''
         }
 
-        case 'getprocessdataerror' : return{
+        case 'gettestdasherror' : return{
             loading:true, val:[], error:action.payload
         }
 
         default :return state
     }
-
 }
+
+
 

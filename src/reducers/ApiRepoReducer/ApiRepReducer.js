@@ -4,22 +4,25 @@ const initialPrctval = {
     error:''
 }
 
-export const getDropDownData = (state=initialPrctval,action)=>{
+
+export const getApiDataRed = (state=initialPrctval,action)=>{
 
     switch(action.type){
-        case 'getdropdowndatareq' : return{
+        case 'getApiReq' : return{
             ...state, loading:true
         }
         
-        case 'getdropdowndatasuccess' : return{
+        case 'getApiSuccess' : return{
             loading:false, val:action.payload, error:''
         }
 
-        case 'getdropdowndataerror' : return{
+        case 'getApiError' : return{
             loading:true, val:[], error:action.payload
         }
 
         default :return state
     }
 }
+
+
 

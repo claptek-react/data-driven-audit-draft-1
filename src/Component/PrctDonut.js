@@ -2,7 +2,6 @@ import React,{useEffect,useState} from 'react'
 import axios from 'axios'
 import {Doughnut} from 'react-chartjs-2'
 // import {Chart as ChartJS} from 'chart.js/auto'
-import { processRepTitle,sscDisInvis,fetchProcessData,riskRepTitle,fetchRiskData,controlRepTitle,fetchControlData,testRepTitle,fetchTestData, allTitles} from '../actions'
 import { useDispatch,useSelector } from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 
@@ -46,19 +45,19 @@ options={{
     }
   },
   backgroundColor:bgColor,
-  onClick: (e, elements) => {
-    if(elements[0].index===0){
-    navigate('/Component/PrctRep');dispatch(fetchProcessData())
-    }else if(elements[0].index===1){
-    navigate('/Component/PrctRep');dispatch(fetchRiskData())
-    }else if(elements[0].index===2){
-    navigate('/Component/PrctRep');dispatch(fetchControlData())
-    }else if(elements[0].index===3){
-    navigate('/Component/PrctRep');dispatch(fetchTestData())
-    }
-    dispatch(allTitles(dashLabel[elements[0].index]))
-    dispatch(sscDisInvis());
-  },
+  // onClick: (e, elements) => {
+  //   if(elements[0].index===0){
+  //   navigate('/Component/PrctRep');dispatch(fetchProcessData())
+  //   }else if(elements[0].index===1){
+  //   navigate('/Component/PrctRep');dispatch(fetchRiskData())
+  //   }else if(elements[0].index===2){
+  //   navigate('/Component/PrctRep');dispatch(fetchControlData())
+  //   }else if(elements[0].index===3){
+  //   navigate('/Component/PrctRep');dispatch(fetchTestData())
+  //   }
+  //   dispatch(allTitles(dashLabel[elements[0].index]))
+  //   dispatch(sscDisInvis());
+  // },
 
 }}
 />}
